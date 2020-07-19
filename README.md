@@ -4,6 +4,8 @@ Allows your app to authenticate users with Plex (similar to OAuth2 authorization
 ### Install
 `npm install login-with-plex`
 
+[![npm version](https://badge.fury.io/js/login-with-plex.svg)](https://badge.fury.io/js/login-with-plex)
+
 ### Usage
 
 #### Step 1 - Initalize
@@ -31,13 +33,13 @@ Example implementation with express:
 ```javascript
 App.get('/login', async function(req, res) {
   // Get plex user information (you should also add error handling)
-  const credentials = await plexLoginInstance.getUserInfo();
+  const credentials = await plexLoginInstance.getCredentials();
   
   // Save user information to their session (or however else you want to manage it)
   req.session.plexCredentials = credentials;
 
   // Redirect user to plex login page
-  res.redirect(plexLoginInstance.getLoginUrl(credentials.code));
+  res.redirect(plexLoginInstance.getLoginUrl(credentials));
 })
 ```
 
@@ -54,7 +56,7 @@ App.get('/plex-login-redirect', async function(req, res) {
   const credentials = req.session.plexCredentials;
 
   // Get user's plex information after they have logged in
-  const plexUserInfo = await plexLoginInstance.getPlexInfo(credentials);
+  const plexUserInfo = await plexLoginInstance.getUserInfo(credentials);
 
   // You will probably want validate that this specific plex user should have access to your app
 

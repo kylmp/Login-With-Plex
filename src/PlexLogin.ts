@@ -1,10 +1,10 @@
-import {IPlexClient, IPlexUser} from './PlexModels'
+import {IPlexClient, IPlexCredentials} from './PlexModels'
 import axios from 'axios';
 
 export class PlexLogin {
   constructor(private clientInfo: IPlexClient) { }
 
-  public async getUserInfo(): Promise<IPlexUser> {
+  public async getCredentials(): Promise<IPlexCredentials> {
     var url = 'https://plex.tv/api/v2/pins'
     var body = 'strong=true' + 
               '&X-Plex-Product='+encodeURIComponent(this.clientInfo.appName) + 
@@ -21,18 +21,18 @@ export class PlexLogin {
     });
   }
 
-  public getLoginUrl(code: string): string {
-    if (code === undefined) {
+  public getLoginUrl(plexUser: IPlexCredentials): string {
+    if (plexUser.code === undefined) {
       throw new Error('PlexUser code is required to generate login url');
     }
     return 'https://app.plex.tv/auth#?' +
            'clientID='+encodeURIComponent(this.clientInfo.clientId) +
-           '&code='+encodeURIComponent(code) +
+           '&code='+encodeURIComponent(plexUser.code) +
            '&forwardUrl='+encodeURIComponent(this.clientInfo.forwardUrl) + 
            '&context%5Bdevice%5D%5Bproduct%5D='+encodeURIComponent(this.clientInfo.appName);
   }
 
-  private async getAuthToken(plexUser: IPlexUser): Promise<string> {
+  private async getAuthToken(plexUser: IPlexCredentials): Promise<string> {
     var url = 'https://plex.tv/api/v2/pins/'+plexUser.pin +
                '?code='+encodeURIComponent(plexUser.code) +
                '&X-Plex-Client-Identifier='+encodeURIComponent(this.clientInfo.clientId);
@@ -47,7 +47,7 @@ export class PlexLogin {
     });
   }
 
-  public async getPlexInfo(plexUser: IPlexUser): Promise<object | null> {
+  public async getUserInfo(plexUser: IPlexCredentials): Promise<object | null> {
     if (plexUser.code === undefined) 
       throw new Error('PlexUser code is required to retrieve plex info');
     if (plexUser.pin === undefined) 
