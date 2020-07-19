@@ -4,7 +4,7 @@ export interface IPlexClient {
   forwardUrl: string;
 }
 
-export interface IPlexUser {
+export interface IPlexCredentials {
   code: string,
   pin: number,
   auth?: string
