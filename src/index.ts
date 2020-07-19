@@ -1,2 +1,2 @@
 export * from './PlexLogin';
-export {IPlexClient, IPlexUser} from './PlexModels';
+export {IPlexClient, IPlexCredentials} from './PlexModels';
