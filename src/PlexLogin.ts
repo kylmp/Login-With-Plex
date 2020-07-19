@@ -5,11 +5,13 @@ export class PlexLogin {
   constructor(private clientInfo: IPlexClient) { }
 
   public async getUserInfo(): Promise<IPlexUser> {
-    var url = 'https://plex.tv/api/v2/pins?strong=true' + 
+    var url = 'https://plex.tv/api/v2/pins'
+    var body = 'strong=true' + 
               '&X-Plex-Product='+encodeURIComponent(this.clientInfo.appName) + 
               '&X-Plex-Client-Identifier='+encodeURIComponent(this.clientInfo.clientId);
+    console.log(url)
     return new Promise((resolve, reject) => {
-      axios.get(url, {headers: {accept: 'application/json'}})
+      axios.post(url, body, {headers: {accept: 'application/json'}})
         .then((res) => {
           resolve({code: res.data.code, pin: res.data.id});
         })

@@ -10,13 +10,13 @@ Allows your app to authenticate users with Plex (similar to OAuth2 authorization
 Using login with plex requires initalizing an instance of the PlexLogin class:
 
 ```javascript
-const PlexLogin = require('login-with-plex')
+const plexLogin = require('login-with-plex');
 
-const plexLoginInstance = new PlexLogin({
-  appName: 'My App';
-  clientId: 'UUID';
-  forwardUrl: 'https://myapp.com/plex-login-redirect';
-})
+const plexLoginInstance = new plexLogin.PlexLogin({
+  appName: 'My App',
+  clientId: 'UUID',
+  forwardUrl: 'https://myapp.com/plex-login-redirect'
+});
 ```
 
 * `appName` is a string, the name of your application
@@ -31,13 +31,13 @@ Example implementation with express:
 ```javascript
 App.get('/login', async function(req, res) {
   // Get plex user information (you should also add error handling)
-  const plexUser = await plexLoginInstance.getUserInfo();
+  const credentials = await plexLoginInstance.getUserInfo();
   
   // Save user information to their session (or however else you want to manage it)
-  req.session.plex.credentials = plexUser;
+  req.session.plexCredentials = credentials;
 
   // Redirect user to plex login page
-  res.redirect(plexLoginInstance.getLoginUrl(plexUser.code));
+  res.redirect(plexLoginInstance.getLoginUrl(credentials.code));
 })
 ```
 
@@ -49,16 +49,20 @@ You need to create a route in your app which is the route that plex will forward
 Example implementation with express:
 
 ```javascript
-App.get('/plex-login-redirect', function(req, res) {
+App.get('/plex-login-redirect', async function(req, res) {
+  // Load user credentials from session
+  const credentials = req.session.plexCredentials;
+
   // Get user's plex information after they have logged in
-  const plexUserInfo = await plexLoginInstance.getPlexInfo(req.session.plex.credentials)
+  const plexUserInfo = await plexLoginInstance.getPlexInfo(credentials);
 
   // You will probably want validate that this specific plex user should have access to your app
 
   // Save plex user's information somewhere, or in session
-  req.session.plex.userinfo = plexUserInfo
+  req.session.plexUser = plexUserInfo;
+  delete req.session.plexCredentials;
 
-  // Redirect user to your app
+  // Redirect user back to your app
   res.redirect('/home');
 })
 ```
