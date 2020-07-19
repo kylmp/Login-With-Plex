@@ -4,6 +4,8 @@ Allows your app to authenticate users with Plex (similar to OAuth2 authorization
 ### Install
 `npm install login-with-plex`
 
+[![npm version](https://badge.fury.io/js/login-with-plex.svg)](https://badge.fury.io/js/login-with-plex)
+
 ### Usage
 
 #### Step 1 - Initalize
