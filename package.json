@@ -1,0 +1,32 @@
+{
+  "name": "login-with-plex",
+  "version": "1.0.0",
+  "description": "Allows your app to authenticate users with Plex",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qcryptic/login-with-plex.git"
+  },
+  "keywords": [
+    "plex",
+    "login",
+    "oauth"
+  ],
+  "author": "Kyle Rump",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qcryptic/login-with-plex/issues"
+  },
+  "homepage": "https://github.com/qcryptic/login-with-plex#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}
