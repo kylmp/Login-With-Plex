@@ -32,8 +32,8 @@ Example implementation with express:
 
 ```javascript
 App.get('/login', async function(req, res) {
-  // Generate a new set of plex user credentials (you should also add error handling)
-  const credentials = await plexLoginInstance.getCredentials();
+  // Get plex user information (you should also add error handling)
+  const credentials = await plexLoginInstance.generateCredentials();
   
   // Save credentials to the user's session (or however else you want to manage it)
   req.session.plexCredentials = credentials;
