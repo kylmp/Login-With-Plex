@@ -32,10 +32,10 @@ Example implementation with express:
 
 ```javascript
 App.get('/login', async function(req, res) {
-  // Get plex user information (you should also add error handling)
+  // Generate credentials for user
   const credentials = await plexLoginInstance.generateCredentials();
   
-  // Save credentials to the user's session (or however else you want to manage it)
+  // Save user credentials to their session 
   req.session.plexCredentials = credentials;
 
   // Redirect user to plex login page
@@ -58,7 +58,7 @@ App.get('/plex-login-redirect', async function(req, res) {
   // Get user's plex information after they have logged in
   const plexUserInfo = await plexLoginInstance.getUserInfo(credentials);
 
-  // You will probably want validate that this specific plex user should have access to your app
+  // You probably want to validate the plex user against your server
 
   // Save plex user's information somewhere, or in session
   req.session.plexUser = plexUserInfo;
