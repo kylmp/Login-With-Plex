@@ -1,6 +1,6 @@
 {
   "name": "login-with-plex",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Allows your app to authenticate users with Plex",
   "main": "dist/index.js",
   "types": "dist/index.d.js",

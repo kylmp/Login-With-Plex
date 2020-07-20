@@ -50,10 +50,11 @@ export class PlexLogin {
    * @param cred : the credentials for the user's login (code and pin required)  
    */
   public async getUserInfo(cred: IPlexCredentials): Promise<object | null> {
-    if (cred.code === undefined || cred.pin === undefined) 
-      throw new Error('Plex code and pin is required to retrieve plex user info');
-    if (cred.auth === undefined) 
+    if (cred.auth === undefined) {
+      if (cred.code === undefined || cred.pin === undefined) 
+        throw new Error('Plex code and pin is required to retrieve plex user info');
       cred.auth = await this.getAuthToken(cred).catch(err => { throw err });
+    } 
     var url = `https://plex.tv/api/v2/user?X-Plex-Product=${this.client.appName}` + 
               `&X-Plex-Client-Identifier=${this.client.clientId}&X-Plex-Token=${cred.auth}`;
     return new Promise((resolve, reject) => {
