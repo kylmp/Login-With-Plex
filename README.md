@@ -35,7 +35,7 @@ App.get('/login', async function(req, res) {
   // Get plex user information (you should also add error handling)
   const credentials = await plexLoginInstance.generateCredentials();
   
-  // Save user information to their session (or however else you want to manage it)
+  // Save credentials to the user's session (or however else you want to manage it)
   req.session.plexCredentials = credentials;
 
   // Redirect user to plex login page
