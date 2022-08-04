@@ -6,6 +6,9 @@ export class PlexLogin {
     this.client.appName = encodeURIComponent(this.client.appName);
     this.client.clientId = encodeURIComponent(this.client.clientId);
     this.client.forwardUrl = encodeURIComponent(this.client.forwardUrl);
+    this.client.platform = encodeURIComponent(this.client.platform);
+    this.client.device = encodeURIComponent(this.client.device);
+    this.client.version = encodeURIComponent(this.client.version);
   }
 
   /**
@@ -13,7 +16,7 @@ export class PlexLogin {
    */
   public async generateCredentials(): Promise<IPlexCredentials> {
     let url = 'https://plex.tv/api/v2/pins';
-    let body = `strong=true&X-Plex-Product=${this.client.appName}&X-Plex-Client-Identifier=${this.client.clientId}`;
+    let body = `strong=true&X-Plex-Product=${this.client.appName}&X-Plex-Client-Identifier=${this.client.clientId}&X-Plex-Device=${this.client.device}&X-Plex-Platform=${this.client.platform}&X-Plex-Version=${this.client.version}`;
     return new Promise((resolve, reject) => {
       this.httpRequest(url, body)
         .then(res => { resolve({code: res.code, pin: res.id}) })
@@ -29,7 +32,7 @@ export class PlexLogin {
     if (cred.code === undefined) 
       throw new Error('PlexUser code is required to generate login url');
     return `https://app.plex.tv/auth#?clientID=${this.client.clientId}&code=${cred.code}` +
-           `&forwardUrl=${this.client.forwardUrl}&context%5Bdevice%5D%5Bproduct%5D=${this.client.appName}`;
+           `&forwardUrl=${this.client.forwardUrl}&context%5Bdevice%5D%=${this.client.device}5Bproduct%5D=${this.client.appName}`;
   }
 
   /**
